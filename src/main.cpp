@@ -22,9 +22,11 @@ const double RollerSpeedMulti = 0.8; // 200 * 0.8 = 160
 
 Motor left_front(1, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 Motor left_back(2, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+Motor_Group left({left_front,left_back});
 
 Motor right_front(9, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 Motor right_back(10, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+Motor_Group right({right_front,right_back});
 
 Motor flywheel1(4, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 Motor flywheel2(5, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
@@ -165,11 +167,8 @@ void PIDMove(float distance) {
     prevError = error;
     speed = (kP * error) + (kI * integral) + (kD * derivative);
 
-    left_front.move_voltage(speed);
-    left_back.move_voltage(speed);
-
-    right_front.move_voltage(speed);
-    right_back.move_voltage(speed);
+    left.move_voltage(speed);
+    right.move_voltage(speed);
   }
 }
 void PIDTurn(float angle) {
@@ -202,11 +201,8 @@ void PIDTurn(float angle) {
     prevError = error;
     speed = (kP * error) + (kI * integral) + (kD * derivative);
 
-    left_front.move_voltage(speed);
-    left_back.move_voltage(speed);
-
-    right_front.move_voltage(-speed);
-    right_back.move_voltage(-speed);
+    left.move_voltage(speed);
+    right.move_voltage(-speed);
   }
 }
 
@@ -301,10 +297,8 @@ void opcontrol() {
   flywheel.move(40);
 
   while (true) {
-    left_front.move(master.get_analog(ANALOG_LEFT_Y) + master.get_analog(ANALOG_RIGHT_X));
-    left_back.move(master.get_analog(ANALOG_LEFT_Y) + master.get_analog(ANALOG_RIGHT_X));
-    right_front.move(master.get_analog(ANALOG_LEFT_Y) - master.get_analog(ANALOG_RIGHT_X));
-    right_back.move(master.get_analog(ANALOG_LEFT_Y) - master.get_analog(ANALOG_RIGHT_X));
+    left.move(master.get_analog(ANALOG_LEFT_Y) + master.get_analog(ANALOG_RIGHT_X));
+    right.move(master.get_analog(ANALOG_LEFT_Y) - master.get_analog(ANALOG_RIGHT_X));
 
     if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R1)) {
       TurnToHighGoal();
