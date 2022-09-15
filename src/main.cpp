@@ -22,11 +22,11 @@ const double RollerSpeedMulti = 0.8; // 200 * 0.8 = 160
 
 Motor left_front(1, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 Motor left_back(2, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
-Motor_Group left({left_front,left_back});
+Motor_Group left({left_front, left_back});
 
 Motor right_front(9, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 Motor right_back(10, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
-Motor_Group right({right_front,right_back});
+Motor_Group right({right_front, right_back});
 
 Motor flywheel1(4, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 Motor flywheel2(5, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
@@ -237,7 +237,7 @@ void HighVelShotSpinUp() {
   }
 }
 
-void Shoot() {
+/*void Shoot() {
   const int DistanceToDetectedDisc = 20;
   if (distance1.get() > DistanceToDetectedDisc) { // If no discs detected, exit function
     return;
@@ -275,20 +275,24 @@ void Shoot() {
   flywheel.move(40);
 
   intake.move(127);
+}*/
+
+void Shoot(){
+  intake.move(-127);
 }
 
 void autonomous() {
-  Task OdomTask = {OdomTick};
-  Gif gif("/usd/mygif.gif", lv_scr_act());
+  //Task OdomTask = {OdomTick};
+  //Gif gif("/usd/mygif.gif", lv_scr_act());
   // Something Something Auton
-  gif.clean();
+  //gif.clean();
 }
 
 void opcontrol() {
 
-  Gif gif("/usd/mygif.gif", lv_scr_act());
+  //Gif gif("/usd/mygif.gif", lv_scr_act());
 
-  Task OdomTask = {OdomTick};
+ // Task OdomTask = {OdomTick};
 
   Controller master(E_CONTROLLER_MASTER);
 
@@ -317,5 +321,5 @@ void opcontrol() {
     }
     pros::delay(20);
   }
-  gif.clean();
+  //gif.clean();
 }
